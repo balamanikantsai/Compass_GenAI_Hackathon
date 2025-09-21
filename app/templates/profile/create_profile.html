@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="content-section">
+    <form method="POST" action="" enctype="multipart/form-data">
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Create Your Profile</legend>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="place">Place (City, Country)</label>
+                    <input type="text" class="form-control" id="place" name="place" required>
+                </div>
+                <div class="form-group">
+                    <label for="user_type">I am a:</label>
+                    <select class="form-control" id="user_type" name="user_type" required>
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="professional">Professional</option>
+                        <option value="learner">Learner</option>
+                    </select>
+                </div>
+                <div class="form-group" id="organization_name_group" style="display: none;">
+                    <label for="organization_name">Organization Name (University/College/Company)</label>
+                    <input type="text" class="form-control" id="organization_name" name="organization_name">
+                </div>
+                <div class="form-group">
+                    <label for="detail_1">Detail 1 (e.g., student ID or job title)</label>
+                    <input type="text" class="form-control" id="detail_1" name="detail_1" required>
+                </div>
+                <div class="form-group">
+                    <label for="detail_2">Detail 2 (e.g., teaching subject or department)</label>
+                    <input type="text" class="form-control" id="detail_2" name="detail_2">
+                </div>
+                <div class="form-group">
+                    <label for="resume_file">Upload Resume (PDF only)</label>
+                    <input type="file" class="form-control-file" id="resume_file" name="resume_file" accept="application/pdf">
+                </div>
+                <div class="form-group">
+                    <label for="interests">Interests (comma-separated)</label>
+                    <input type="text" class="form-control" id="interests" name="interests">
+                </div>
+                <div class="form-group">
+                    <label for="hobbies">Hobbies (comma-separated)</label>
+                    <input type="text" class="form-control" id="hobbies" name="hobbies">
+                </div>
+                <div class="form-group">
+                    <label for="additional_info">Additional Information</label>
+                    <textarea class="form-control" id="additional_info" name="additional_info" rows="3"></textarea>
+                </div>
+            </fieldset>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-outline-info">Create Profile</button>
+                </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userTypeSelect = document.getElementById('user_type');
+            const organizationNameGroup = document.getElementById('organization_name_group');
+
+            function toggleOrganizationNameField() {
+                if (userTypeSelect.value === 'learner') {
+                    organizationNameGroup.style.display = 'none';
+                } else {
+                    organizationNameGroup.style.display = 'block';
+                }
+            }
+
+            userTypeSelect.addEventListener('change', toggleOrganizationNameField);
+            // Initial call to set the correct state on page load
+            toggleOrganizationNameField();
+        });
+    </script>
+{% endblock %}

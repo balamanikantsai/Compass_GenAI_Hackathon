@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Flask: Run (reload)",
+			"type": "shell",
+			"command": "$env:FLASK_APP=main.py; $env:FLASK_ENV=development; $env:FLASK_DEBUG=1; flask run --reload",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

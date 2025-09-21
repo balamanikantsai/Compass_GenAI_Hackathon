@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="tracker-container">
+        <legend class="border-bottom mb-4">Personalized Career Tracker</legend>
+
+        {% if current_plan %}
+            <h2>Your Active Career Plan</h2>
+            <p class="text-muted"><strong>Goal:</strong> {{ current_plan.career_goal }}</p>
+            <p class="text-muted">Plan generated on: {{ current_plan.created_date| format_datetime }}</p>
+
+            <h3>Day-wise Learning Tasks:</h3>
+            <ul class="list-group mb-4">
+                {% for task in current_plan.daily_tasks|sort(attribute='day_number') %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center {% if task.is_completed %}list-group-item-success{% endif %}">
+                        <div>
+                            <h5>Day {{ task.day_number }}: {{ task.task_description }}</h5>
+                            {% if task.resources %}
+                                {% set resources = task.resources|from_json %}
+                                {% if resources %}
+                                    <small>Resources:
+                                    {% for resource in resources %}
+                                        <a href="{{ resource }}" target="_blank">{{ resource }}</a>{% if not loop.last %}, {% endif %}
+                                    {% endfor %}
+                                    </small>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        {% if not task.is_completed %}
+                            <form action="{{ url_for('career_advisor.complete_task', task_id=task.id) }}" method="POST">
+                                <button type="submit" class="btn btn-sm btn-success">Mark Complete</button>
+                            </form>
+                        {% else %}
+                            <span class="badge badge-success badge-pill">Completed on {{ task.completed_date| format_datetime }}</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <hr>
+            <h4 class="mt-4">Generate a New Plan</h4>
+            <p class="text-muted">Generating a new plan will replace your current active plan.</p>
+            <form action="{{ url_for('career_advisor.generate_plan') }}" method="POST" class="form-inline">
+                <div class="form-group mb-2 mr-2">
+                    <label for="new_career_goal" class="sr-only">New Career Goal</label>
+                    <input type="text" class="form-control" id="new_career_goal" name="career_goal" placeholder="e.g., Become a Data Scientist" required>
+                </div>
+                <div class="form-group mb-2 mr-2">
+                    <label for="days" class="sr-only">Days (optional)</label>
+                    <input type="number" min="1" max="60" class="form-control" id="days" name="days" placeholder="Days (optional)">
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg mb-2">Generate New Plan</button>
+                <button type="button" id="clear-plan" class="btn btn-outline-danger btn-lg mb-2 ml-2">Clear Plan</button>
+            </form>
+
+        {% else %}
+            <div class="tracker-empty-state">
+                <img src="{{ url_for('static', filename='img/no-plan-yet.jpg') }}" alt="No Plan Yet">
+                <h4>You don't have an active career plan yet.</h4>
+                <p class="lead"> Wanna generate from chat window</p>
+                 <a class="btn btn-primary btn-lg mt-3" href = "{{ url_for('career_advisor.chat_with_ai') }}">Generate A Career Plan</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+    $(function(){
+        $('#clear-plan').on('click', function(){
+            if (!confirm('Clear your current active plan? This will remove all tasks.')) return;
+            $.ajax({
+                url: "{{ url_for('career_advisor.api_clear_career_plan') }}",
+                type: 'POST',
+                success: function(d){
+                    if (d.success) { window.location.reload(); }
+                    else { alert(d.error || 'Failed to clear plan'); }
+                },
+                error: function(xhr){ alert('Failed to clear plan: ' + (xhr.responseJSON && xhr.responseJSON.error || xhr.status)); }
+            });
+        });
+    });
+</script>
+{% endblock %}

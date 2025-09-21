@@ -1,0 +1,8 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+python-dotenv
+google-generativeai
+markdown
+PyPDF2
+pdfminer.six

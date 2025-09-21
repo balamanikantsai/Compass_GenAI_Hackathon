@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="content-section">
+        <legend class="border-bottom mb-4">Your Profile</legend>
+        {% if profile %}
+            <p><strong>Name:</strong> {{ profile.name }}</p>
+            <p><strong>Place:</strong> {{ profile.place }}</p>
+            <p><strong>User Type:</strong> {{ profile.user_type }}</p>
+            <p><strong>Details:</strong> {{ profile.details }}</p>
+            <p><strong>Resume:</strong> {% if profile.resume_path %}<a href="{{ url_for('profile.download_resume', user_id=profile.user_id) }}" target="_blank">Download PDF</a>{% else %}N/A{% endif %}</p>
+            {% if profile.resume_path %}
+                <form method="POST" action="{{ url_for('profile.parse_resume') }}" style="display:inline">
+                    <button type="submit" class="btn btn-sm btn-primary">Parse Resume</button>
+                </form>
+                <h5 class="mt-3">Parsed Resume (AI):</h5>
+                {% if parsed %}
+                    <p><strong>Name:</strong> {{ parsed.name or 'N/A' }}</p>
+                    <p><strong>Email:</strong> {{ parsed.email or 'N/A' }}</p>
+                    <p><strong>Phone:</strong> {{ parsed.phone or 'N/A' }}</p>
+                    <p><strong>Skills:</strong> {{ parsed.skills | join(', ') if parsed.skills else 'N/A' }}</p>
+                    <p><strong>Summary:</strong> {{ parsed.summary or 'N/A' }}</p>
+                {% else %}
+                    <p><em>No structured data available yet. Use "Parse Resume" to analyze.</em></p>
+                {% endif %}
+            {% endif %}
+            <p><strong>Interests:</strong> {{ profile.interests }}</p>
+            <p><strong>Hobbies:</strong> {{ profile.hobbies }}</p>
+            <p><strong>Additional Info:</strong> {{ profile.additional_info }}</p>
+            <a href="{{ url_for('profile.edit_profile') }}" class="btn btn-secondary">Edit Profile</a>
+        {% else %}
+            <p>No profile found. Please <a href="{{ url_for('profile.create_profile') }}">create your profile</a>.</p>
+        {% endif %}
+    </div>
+{% endblock %}

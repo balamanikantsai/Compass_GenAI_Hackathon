@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="content-section">
+        <legend class="border-bottom mb-4">Resume Tailoring</legend>
+        <p>Get personalized suggestions to tailor your resume for a specific job.</p>
+
+        <div class="alert alert-info" role="alert">
+            Your uploaded resume (PDF) will be used automatically. To change it, update your profile.
+        </div>
+        <form method="POST" action="{{ url_for('career_advisor.tailor_resume') }}">
+            <div class="form-group">
+                <label for="job_description">Paste Job Description:</label>
+                <textarea class="form-control" id="job_description" name="job_description" rows="10" placeholder="Paste the full job description here..." required></textarea>
+                <small class="form-text text-muted">The AI will use this to analyze your resume.</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Get Tailoring Suggestions</button>
+        </form>
+
+        {% if suggestions %}
+            <h3 class="mt-5">Resume Tailoring Suggestions</h3>
+            {% if suggestions.summary %}
+            <div class="alert alert-secondary">{{ suggestions.summary }}</div>
+            {% endif %}
+
+            <div id="tailorAccordion" class="accordion">
+                {% for e in suggestions.edits %}
+                <div class="card">
+                    <div class="card-header" id="heading{{ loop.index }}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="{{ 'true' if loop.first else 'false' }}" aria-controls="collapse{{ loop.index }}">
+                                    {{ e.section }}
+                                </button>
+                            </h5>
+                            <button class="btn btn-sm btn-outline-primary" data-copy-target="#suggested{{ loop.index }}">Copy Suggestion</button>
+                        </div>
+                    </div>
+                    <div id="collapse{{ loop.index }}" class="collapse {% if loop.first %}show{% endif %}" aria-labelledby="heading{{ loop.index }}" data-parent="#tailorAccordion">
+                        <div class="card-body">
+                            {% if e.original %}
+                            <div class="mb-3">
+                                <span class="badge badge-secondary">Original</span>
+                                <div class="border rounded p-2 bg-white">
+                                    {{ e.original | markdown }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="mb-3">
+                                <span class="badge badge-success">Suggested</span>
+                                <div id="suggested{{ loop.index }}" class="border rounded p-2 bg-white">
+                                    {{ e.suggested | markdown }}
+                                </div>
+                            </div>
+                            {% if e.reason %}
+                            <div class="mb-2 text-muted">
+                                <span class="badge badge-info">Reason</span>
+                                <div class="mt-1">{{ e.reason | markdown }}</div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block extra_scripts %}
+{{ super() }}
+<script>
+    $(document).on('click', '[data-copy-target]', function () {
+        var target = $(this).data('copy-target');
+        var el = $(target);
+        if (!el.length) return;
+        var text = el.text().trim();
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text);
+        } else {
+            var ta = document.createElement('textarea');
+            ta.value = text; document.body.appendChild(ta);
+            ta.select(); document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
+        $(this).text('Copied!');
+        var btn = $(this);
+        setTimeout(function(){ btn.text('Copy Suggestion'); }, 1200);
+    });
+</script>
+{% endblock %}

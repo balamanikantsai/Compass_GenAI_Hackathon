@@ -1,0 +1,296 @@
+body {
+    background-color: #f8f9fa;
+    color: #343a40;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Page layout: keep footer in place and allow main to grow */
+html, body { height: 100%; }
+body { min-height: 100vh; display: flex; flex-direction: column; }
+main.container { flex: 1 0 auto; }
+.site-footer { flex-shrink: 0; }
+
+.site-header {
+    background-color: #007bff;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #fff !important;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    margin-left: 15px;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #fff !important;
+}
+
+.content-section {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,.05);
+    margin-bottom: 20px;
+}
+
+h1, h2, h3, h4, legend {
+    color: #0056b3;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.alert {
+    margin-top: 20px;
+}
+
+/* Home Page Specific Styles */
+.hero-section {
+    background: linear-gradient(rgba(0, 123, 255, 0.7), rgba(0, 123, 255, 0.7)), url("../img/career-guidance-banner.jpg") no-repeat center center;
+    background-size: cover;
+    color: #fff;
+    padding: 80px 0;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 30px auto;
+}
+
+.section-heading {
+    font-size: 2.2rem;
+    color: #0056b3;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.card-feature {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    height: 100%; /* Ensure cards are same height */
+}
+
+.card-feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+}
+
+.card-feature .card-body {
+    padding: 30px;
+    text-align: center;
+}
+
+.card-feature .card-title {
+    font-size: 1.6rem;
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.card-feature .card-text {
+    color: #6c757d;
+}
+
+.card-img-top-custom {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* Tracker Page Specific Styles */
+.tracker-container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,.05);
+    margin-bottom: 20px;
+}
+
+.tracker-container h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.tracker-container h3 {
+    color: #0056b3;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.list-group-item {
+    border: 1px solid #e9ecef;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.list-group-item-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.list-group-item strong {
+    color: #343a40;
+}
+
+.list-group-item small {
+    color: #6c757d;
+}
+
+.tracker-empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    border: 2px dashed #e9ecef;
+    border-radius: 8px;
+    margin-top: 40px;
+    background-color: #fcfdff;
+}
+
+.tracker-empty-state h4 {
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+
+.tracker-empty-state img {
+    max-width: 150px;
+    margin-bottom: 20px;
+}
+
+/* Chat Styles - Gemini Look */
+.chat-box {
+    background-color: #f0f1f4;
+    border-radius: 10px;
+    padding: 15px;
+    overflow-y: scroll;
+    height: 400px;
+}
+/* Chat layout improvements */
+/* Constrain chat card to viewport height; messages scroll within card body */
+.chat-card { display: flex; flex-direction: column; max-height: calc(100vh - 160px); }
+.chat-card .card-body { flex: 1 1 auto; overflow-y: auto; }
+.chat-bubble { white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; }
+.chat-bubble-user { background: #e8f0fe; }
+.chat-bubble-ai { background: #f1f3f4; }
+
+/* Chat column widths */
+@media (min-width: 768px) {
+    #chat-sidebar { flex: 0 0 20%; max-width: 20%; }
+    #chat-main-col { flex: 0 0 75%; max-width: 75%; }
+    #chat-main-col.full-width { flex: 0 0 100%; max-width: 100%; }
+}
+
+.message-user {
+    background-color: #e2f1ff;
+    border-radius: 20px;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    text-align: right;
+    word-wrap: break-word;
+    max-width: 80%;
+    margin-left: auto;
+}
+
+.message-ai {
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    text-align: left;
+    word-wrap: break-word;
+    max-width: 80%;
+    margin-right: auto;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+#chat-form {
+    display: flex;
+    margin-top: 15px;
+}
+
+#chat-form input[type="text"] {
+    flex-grow: 1;
+    border-radius: 25px;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+}
+
+#chat-form button {
+    border-radius: 25px;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#chat-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Scrollbar Styling */
+.chat-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-box::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.chat-box::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+/* Footer Styles */
+.site-footer {
+    background-color: #343a40;
+    color: #f8f9fa;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 50px;
+    border-top: 1px solid #495057;
+}
+
+.site-footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}

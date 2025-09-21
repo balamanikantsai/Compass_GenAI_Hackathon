@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="content-section">
+    <form method="POST" action="" enctype="multipart/form-data">
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Edit Your Profile</legend>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ profile.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="place">Place (City, Country)</label>
+                    <input type="text" class="form-control" id="place" name="place" value="{{ profile.place }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="user_type">I am a:</label>
+                    <select class="form-control" id="user_type" name="user_type" required>
+                        <option value="student" {% if profile.user_type == 'student' %}selected{% endif %}>Student</option>
+                        <option value="teacher" {% if profile.user_type == 'teacher' %}selected{% endif %}>Teacher</option>
+                        <option value="professional" {% if profile.user_type == 'professional' %}selected{% endif %}>Professional</option>
+                        <option value="learner" {% if profile.user_type == 'learner' %}selected{% endif %}>Learner</option>
+                    </select>
+                </div>
+                <div class="form-group" id="organization_name_group">
+                    <label for="organization_name">Organization Name (University/College/Company)</label>
+                    <input type="text" class="form-control" id="organization_name" name="organization_name" value="{{ profile.organization_name or '' }}">
+                </div>
+                <div class="form-group">
+                    <label for="detail_1">Detail 1 (e.g., student ID or job title)</label>
+                    <input type="text" class="form-control" id="detail_1" name="detail_1" value="{{ (profile.details.split('\n')[0]) if profile.details else '' }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="detail_2">Detail 2 (e.g., teaching subject or department)</label>
+                    <input type="text" class="form-control" id="detail_2" name="detail_2" value="{{ (profile.details.split('\n')[1]) if profile.details and profile.details.split('\n')|length>1 else '' }}">
+                </div>
+                <div class="form-group">
+                    <label for="resume_file">Upload Resume (PDF only) - leave blank to keep existing</label>
+                    <input type="file" class="form-control-file" id="resume_file" name="resume_file" accept="application/pdf">
+                </div>
+                <div class="form-group">
+                    <label for="interests">Interests (comma-separated)</label>
+                    <input type="text" class="form-control" id="interests" name="interests" value="{{ profile.interests or '' }}">
+                </div>
+                <div class="form-group">
+                    <label for="hobbies">Hobbies (comma-separated)</label>
+                    <input type="text" class="form-control" id="hobbies" name="hobbies" value="{{ profile.hobbies or '' }}">
+                </div>
+                <div class="form-group">
+                    <label for="additional_info">Additional Information</label>
+                    <textarea class="form-control" id="additional_info" name="additional_info" rows="3">{{ profile.additional_info or '' }}</textarea>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-info">Update Profile</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userTypeSelect = document.getElementById('user_type');
+            const organizationNameGroup = document.getElementById('organization_name_group');
+
+            function toggleOrganizationNameField() {
+                if (userTypeSelect.value === 'learner') {
+                    organizationNameGroup.style.display = 'none';
+                } else {
+                    organizationNameGroup.style.display = 'block';
+                }
+            }
+
+            userTypeSelect.addEventListener('change', toggleOrganizationNameField);
+            // Initial call to set the correct state on page load
+            toggleOrganizationNameField();
+        });
+    </script>
+{% endblock %}

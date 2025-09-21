@@ -12,3 +12,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or f"sqlite:///{DB_PATH}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     RESUME_UPLOAD_FOLDER = os.path.join(instance_path := os.path.join(BASE_DIR, 'instance'), 'uploads')
+    
+    # Ensure upload directories exist
+    os.makedirs(RESUME_UPLOAD_FOLDER, exist_ok=True)
+    os.makedirs(os.path.join(DB_DIR, 'user_data'), exist_ok=True)

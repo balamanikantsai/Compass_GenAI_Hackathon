@@ -16,7 +16,7 @@ The `config.py` file is already configured to use environment variables for prod
 
 ### 2. Database Configuration
 
-For production, you'll want to use PostgreSQL instead of SQLite. The app is already configured to use `DATABASE_URL` environment variable.
+The app uses SQLite by default, which is perfect for small to medium applications. The database file will be stored in the `instance/` directory and persists across deployments on Render.
 
 ## 🌐 Deploy to Render
 
@@ -57,25 +57,14 @@ FLASK_ENV=production
 ```bash
 GEMINI_MODEL=gemini-1.5-flash
 PORT=10000
+# DATABASE_URL=custom-database-url (optional - uses SQLite by default)
 ```
 
 **🔐 Important**: 
 - Generate a secure `SECRET_KEY` using: `python -c "import secrets; print(secrets.token_hex(32))"`
 - Get your `GEMINI_API_KEY` from [Google AI Studio](https://makersuite.google.com/app/apikey)
 
-### Step 4: Add PostgreSQL Database (Recommended)
-
-1. In Render Dashboard, click **"New +"** → **"PostgreSQL"**
-2. Choose a name like `career-advisor-db`
-3. Select the same region as your web service
-4. Choose **Free tier** for testing
-5. After creation, copy the **External Database URL**
-6. Add it to your web service environment variables as:
-   ```bash
-   DATABASE_URL=your-postgresql-url-here
-   ```
-
-### Step 5: Deploy
+### Step 4: Deploy
 
 1. Click **"Create Web Service"**
 2. Render will automatically:
@@ -104,8 +93,8 @@ PORT=10000
    - Verify all dependencies in `requirements.txt`
 
 2. **Database Errors**:
-   - Ensure `DATABASE_URL` is correctly set
-   - Check PostgreSQL connection
+   - SQLite database will be created automatically
+   - Check that `instance/` directory has write permissions
 
 3. **API Errors**:
    - Verify `GEMINI_API_KEY` is valid
@@ -132,10 +121,11 @@ With auto-deploy enabled:
 ## 💡 Production Tips
 
 1. **Environment Variables**: Never commit sensitive data to Git
-2. **Database Backups**: Set up regular PostgreSQL backups
-3. **Monitoring**: Enable Render's monitoring features
-4. **Custom Domain**: Add your own domain in Service Settings
-5. **SSL**: Render provides free SSL certificates
+2. **Database Persistence**: SQLite data persists in Render's disk storage
+3. **Database Backups**: Consider periodic downloads of the SQLite file for backups
+4. **Monitoring**: Enable Render's monitoring features
+5. **Custom Domain**: Add your own domain in Service Settings
+6. **SSL**: Render provides free SSL certificates
 
 ## 📱 Test Your Deployment
 
